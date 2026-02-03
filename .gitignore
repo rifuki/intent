@@ -1,0 +1,33 @@
+# Build artifacts
+/target/
+**/target/
+
+# Environment files (NEVER commit secrets)
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Foundry
+intent-evm/contracts/cache/
+intent-evm/contracts/out/
+broadcast/
+
+# Dependencies (if not using workspace)
+node_modules/
