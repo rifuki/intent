@@ -1,0 +1,17 @@
+[package]
+name = "intent-db"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[dependencies]
+async-trait = "0.1"
+chrono = { workspace = true }
+serde = { workspace = true }
+tracing = { workspace = true }
+tokio = { workspace = true }
+
+# SeaORM
+sea-orm = { version = "2.0.0-rc", features = [ "sqlx-postgres", "runtime-tokio-rustls", "macros" ] }
+sea-orm-migration = { version = "2.0.0-rc", features = [ "sqlx-postgres", "runtime-tokio-rustls" ] }

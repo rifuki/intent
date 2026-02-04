@@ -6,7 +6,7 @@ import {IntentGateway} from "../src/IntentGateway.sol";
 
 contract DeployIntentGateway is Script {
     function run() external returns (IntentGateway) {
-        uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
+        uint256 deployerPrivateKey = vm.envUint("SOLVER_PRIVATE_KEY");
         
         vm.startBroadcast(deployerPrivateKey);
         

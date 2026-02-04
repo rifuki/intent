@@ -16,6 +16,7 @@ use tracing_subscriber::util::SubscriberInitExt;
 
 #[tokio::main]
 async fn main() -> std::io::Result<()> {
+    dotenv::dotenv().ok();
     info!("🚀 Starting API...");
     let config = Arc::new(Config::from_env());
 
@@ -31,7 +32,7 @@ async fn main() -> std::io::Result<()> {
         "🚀 Starting server"
     );
 
-    let app_state = AppState::new(config.clone());
+    let app_state = AppState::new(config.clone()).await;
     info!("✅ Application state initialized");
 
     let allowed_origins: Vec<_> = app_state
@@ -56,7 +57,7 @@ async fn main() -> std::io::Result<()> {
         .layer(cors)
         .into_make_service_with_connect_info::<SocketAddr>();
 
-    let listener = create_dual_stack_listener(app_state.config.server.port).await?;
+    let listener = create_dual_stack_listener(config.server.port).await?;
 
     axum::serve(listener, app).await
 }

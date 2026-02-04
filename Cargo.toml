@@ -4,11 +4,12 @@ members = [
   "intent-core",
   "intent-evm",
   "intent-api",
-  "intent-solver"
+  "intent-solver",
+  "intent-db",
 ]
 
 [workspace.package]
-version = "0.0.1"
+version = "0.0.2"
 edition = "2024"
 authors = ["rifuki"]
 license = "MIT"
@@ -34,13 +35,16 @@ dotenv = "0.15.0"
 
 # EVM / Alloy
 alloy = { version = "1.6.1", features = [
-    "full",
-    "providers",
-    "contract",
-    "signers",
-    "signer-local",
-    "network",
-    "transports",
-    "transport-http",
-    "pubsub"
+  "full",
+  "providers",
+  "contract",
+  "signers",
+  "signer-local",
+  "network",
+  "transports",
+  "transport-http",
+  "pubsub",
 ] }
+
+
+chrono = { version = "0.4.43", features = ["serde"] }

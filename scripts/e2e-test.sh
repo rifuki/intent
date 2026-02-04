@@ -3,7 +3,7 @@
 
 # Base Sepolia Configuration
 export RPC_URL="https://sepolia.base.org"
-export GATEWAY_ADDRESS="0x4D7Ec71a5bD4Fcf7D56A3679518FDC55a8311683"
+export GATEWAY_ADDRESS="0xEC4c2DaEfeA63A15427c73976eaBAB945B76b463"
 
 # Base Sepolia Token Addresses
 export WETH="0x4200000000000000000000000000000000000006"  # 18 decimals

@@ -13,12 +13,13 @@ A system where users declare **what they want** (e.g., "swap 100 USDC for at lea
 │    User     │────▶│  API Server │────▶│  IntentGateway   │
 │  (Frontend) │     │ (intent-api)│     │   (Contract)     │
 └─────────────┘     └─────────────┘     └──────────────────┘
-                                               ▲
-                                               │
-                    ┌─────────────┐            │
-                    │   Solver    │────────────┘
-                    │(intent-solver)│
-                    └─────────────┘
+                            │                    ▲
+                            │ (Read/Write)       │ (Monitor/Fill)
+                            ▼                    │
+                    ┌─────────────┐      ┌─────────────┐
+                    │  Database   │◀─────│   Solver    │
+                    │ (Postgres)  │      │(intent-solver)│
+                    └─────────────┘      └─────────────┘
 ```
 
 ## Project Structure
@@ -28,51 +29,73 @@ intent/
 ├── Cargo.toml              # Workspace config
 ├── intent-core/            # Core types & traits
 ├── intent-evm/             # EVM adapter (alloy-rs)
+├── intent-db/              # Database layer (SeaORM)
 ├── intent-api/             # HTTP API server (Axum)
-├── intent-solver/          # Automated intent filler
-├── contracts/evm/          # Solidity contracts (Foundry)
-└── scripts/                # E2E test scripts
+├── intent-solver/          # Automated intent filler & Indexer
+├── frontend/               # React Frontend (Vite + cfg)
+└── intent-evm/contracts/   # Solidity contracts (Foundry)
 ```
 
 ## Deployed Contracts
 
 | Network | Contract | Address |
 |---------|----------|---------|
-| Base Sepolia | IntentGateway | `0x4D7Ec71a5bD4Fcf7D56A3679518FDC55a8311683` |
+| Base Sepolia | IntentGateway | `0xEC4c2DaEfeA63A15427c73976eaBAB945B76b463` |
 
 ## Quick Start
 
+### 1. Database Setup
+Ensure PostgreSQL is running and create a database (e.g., `intent_db`).
+
+### 2. Run All Services
+We provide a helper script to start everything at once:
+
 ```bash
-# Build everything
-cargo build --workspace
+# Make script executable
+chmod +x scripts/start-demo.sh
 
-# Run API server
-cd intent-api && cargo run
-
-# Run solver (separate terminal)
-cd intent-solver && cargo run
+# Start API, Solver, and Frontend
+./scripts/start-demo.sh
 ```
+
+### Manual Startup
+
+```bash
+# Terminal 1: API Server
+cargo run -p intent-api
+
+# Terminal 2: Solver
+cargo run -p intent-solver
+
+# Terminal 3: Frontend
+cd frontend && npm install && npm run dev
+```
+
+## Configuration
 
 ## Configuration
 
 ### API Server (`intent-api/.env`)
 ```env
 PORT=8000
+DATABASE_URL=postgres://user:pass@localhost:5432/intent_db
 CORS_ALLOWED_ORIGINS=http://localhost:5173
 LOG_LEVEL=debug
 
 # Base Sepolia
 BASE_SEPOLIA_RPC=https://sepolia.base.org
-BASE_SEPOLIA_GATEWAY=0x4D7Ec71a5bD4Fcf7D56A3679518FDC55a8311683
-BASE_SEPOLIA_PRIVATE_KEY=0x...  # Optional, for signing
+BASE_SEPOLIA_GATEWAY=0xEC4c2DaEfeA63A15427c73976eaBAB945B76b463
 ```
 
 ### Solver (`intent-solver/.env`)
 ```env
+CHAIN_ID=base_sepolia
 RPC_URL=https://sepolia.base.org
-GATEWAY_ADDRESS=0x4D7Ec71a5bD4Fcf7D56A3679518FDC55a8311683
+GATEWAY_ADDRESS=0xEC4c2DaEfeA63A15427c73976eaBAB945B76b463
+DATABASE_URL=postgres://user:pass@localhost:5432/intent_db
 SOLVER_PRIVATE_KEY=0x...
 MIN_PROFIT_BPS=50
+POLL_INTERVAL_SECS=5
 ```
 
 ## API Endpoints

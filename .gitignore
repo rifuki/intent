@@ -31,3 +31,6 @@ broadcast/
 
 # Dependencies (if not using workspace)
 node_modules/
+
+# Foundry dependencies
+intent-evm/contracts/lib/

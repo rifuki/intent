@@ -53,14 +53,14 @@ impl ChainId {
     }
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct TokenInfo {
     pub address: String,
     pub symbol: String,
     pub decimals: u8,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 #[serde(rename_all = "snake_case")]
 pub enum IntentStatus {
     Pending,
@@ -69,7 +69,7 @@ pub enum IntentStatus {
     Expired,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Intent {
     pub id: Option<String>,
     pub chain: ChainId,
